@@ -13,8 +13,4 @@ public class ApplicationTest {
     public void contextLoads() {
     }
 
-    @Test
-    public void main() {
-        Application.main(new String[] {});
-    }
 }
