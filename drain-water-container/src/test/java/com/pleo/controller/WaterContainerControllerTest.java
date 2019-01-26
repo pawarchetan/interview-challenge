@@ -1,5 +1,6 @@
 package com.pleo.controller;
 
+import com.pleo.exception.InvalidCellHeightsException;
 import com.pleo.service.WaterContainerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -34,6 +36,24 @@ public class WaterContainerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("2"))
                 .andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"));
+    }
+
+    @Test
+    public void shouldThrowAnExceptionWhenNumberOfCellsAreEmpty() throws Exception {
+        doThrow(InvalidCellHeightsException.class).when(waterContainerService).getUnitsOfWaterContained(new int[]{});
+        mockMvc.perform(get("/watercontainer/api/v1/units")
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldThrowAnExceptionWhenNumberOfCellsAreLessThan3() throws Exception {
+        doThrow(InvalidCellHeightsException.class).when(waterContainerService).getUnitsOfWaterContained(new int[]{1, 2});
+        mockMvc.perform(get("/watercontainer/api/v1/units?height=1&height=2")
+                .contentType("application/json")
+                .accept("application/json"))
+                .andExpect(status().isBadRequest());
     }
 
 }
