@@ -11,33 +11,22 @@ public class WaterContainerService {
         validateCells(cellHeights);
 
         int totalUnitsOfWaterContained = 0;
+        int leftCell = 0, rightCell = cellHeights.length - 1;
+        int maxLeftCellHeight = 0, maxRightCellHeight = 0;
 
-        for (int index = 0; index < cellHeights.length - 1; index++) {
-            int maxLeftCellHeight;
-            int maxRightCellHeight;
-
-            maxRightCellHeight = getMaxRightCellHeight(index, cellHeights);
-            maxLeftCellHeight = getMaxLeftCellHeight(index, cellHeights);
-
-            totalUnitsOfWaterContained = totalUnitsOfWaterContained + Math.min(maxLeftCellHeight, maxRightCellHeight) - cellHeights[index];
+        while (leftCell < rightCell) {
+            maxLeftCellHeight = Math.max(cellHeights[leftCell], maxLeftCellHeight);
+            maxRightCellHeight = Math.max(cellHeights[rightCell], maxRightCellHeight);
+            if (maxLeftCellHeight < maxRightCellHeight) {
+                totalUnitsOfWaterContained += (maxLeftCellHeight - cellHeights[leftCell]);
+                leftCell++;
+            } else {
+                totalUnitsOfWaterContained += (maxRightCellHeight - cellHeights[rightCell]);
+                rightCell--;
+            }
         }
+
         return totalUnitsOfWaterContained;
-    }
-
-    private int getMaxLeftCellHeight(int index, int[] cellHeights) {
-        int maxLeftCellHeight = 0;
-        for (int j = index; j >= 0; j--) {
-            maxLeftCellHeight = Math.max(maxLeftCellHeight, cellHeights[j]);
-        }
-        return maxLeftCellHeight;
-    }
-
-    private int getMaxRightCellHeight(int index, int[] cellHeights) {
-        int maxRightCellHeight = 0;
-        for (int j = index; j < cellHeights.length; j++) {
-            maxRightCellHeight = Math.max(maxRightCellHeight, cellHeights[j]);
-        }
-        return maxRightCellHeight;
     }
 
     private void validateCells(int[] cellHeights) {
