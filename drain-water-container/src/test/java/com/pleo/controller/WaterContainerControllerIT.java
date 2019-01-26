@@ -33,7 +33,7 @@ public class WaterContainerControllerIT {
                 .contentType("application/json")
                 .accept("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("2"))
+                .andExpect(content().string("{\"totalUnitsOfWaterContained\":2,\"waterContainedCells\":[0,0,2,0]}"))
                 .andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"));
     }
 }

@@ -1,32 +1,39 @@
 package com.pleo.service;
 
 import com.pleo.exception.InvalidCellHeightsException;
+import com.pleo.model.StructureDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WaterContainerService {
 
-    public int getUnitsOfWaterContained(int[] cellHeights) {
+    public StructureDto getUnitsOfWaterContained(int[] cellHeights) {
 
         validateCells(cellHeights);
 
         int totalUnitsOfWaterContained = 0;
         int leftCell = 0, rightCell = cellHeights.length - 1;
         int maxLeftCellHeight = 0, maxRightCellHeight = 0;
+        int[] waterContainedCells = new int[cellHeights.length];
 
         while (leftCell < rightCell) {
             maxLeftCellHeight = Math.max(cellHeights[leftCell], maxLeftCellHeight);
             maxRightCellHeight = Math.max(cellHeights[rightCell], maxRightCellHeight);
             if (maxLeftCellHeight < maxRightCellHeight) {
                 totalUnitsOfWaterContained += (maxLeftCellHeight - cellHeights[leftCell]);
+                waterContainedCells[leftCell] = maxLeftCellHeight - cellHeights[leftCell];
                 leftCell++;
             } else {
                 totalUnitsOfWaterContained += (maxRightCellHeight - cellHeights[rightCell]);
+                waterContainedCells[rightCell] = maxRightCellHeight - cellHeights[rightCell];
                 rightCell--;
             }
         }
 
-        return totalUnitsOfWaterContained;
+        StructureDto structureDto = new StructureDto();
+        structureDto.setTotalUnitsOfWaterContained(totalUnitsOfWaterContained);
+        structureDto.setWaterContainedCells(waterContainedCells);
+        return structureDto;
     }
 
     private void validateCells(int[] cellHeights) {

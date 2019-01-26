@@ -1,6 +1,7 @@
 package com.pleo.controller;
 
 import com.pleo.exception.InvalidCellHeightsException;
+import com.pleo.model.StructureDto;
 import com.pleo.service.WaterContainerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,12 +30,16 @@ public class WaterContainerControllerTest {
     @Test
     public void shouldReturnUnitsOfWaterContained() throws Exception {
         int[] cellHeights = new int[]{1,2,0,2};
-        when(waterContainerService.getUnitsOfWaterContained(cellHeights)).thenReturn(2);
+        StructureDto structureDto = new StructureDto();
+        structureDto.setTotalUnitsOfWaterContained(2);
+        structureDto.setWaterContainedCells(new int[]{0, 0, 2, 0});
+
+        when(waterContainerService.getUnitsOfWaterContained(cellHeights)).thenReturn(structureDto);
         mockMvc.perform(get("/watercontainer/api/v1/units?height=1&height=2&height=0&height=2")
                 .contentType("application/json")
                 .accept("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("2"))
+                .andExpect(content().string("{\"totalUnitsOfWaterContained\":2,\"waterContainedCells\":[0,0,2,0]}"))
                 .andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"));
     }
 
