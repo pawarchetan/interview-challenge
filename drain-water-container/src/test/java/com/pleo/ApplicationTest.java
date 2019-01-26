@@ -12,4 +12,9 @@ public class ApplicationTest {
     @Test
     public void contextLoads() {
     }
+
+    @Test
+    public void main() {
+        Application.main(new String[] {});
+    }
 }
