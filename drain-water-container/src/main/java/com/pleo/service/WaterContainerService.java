@@ -43,10 +43,9 @@ public class WaterContainerService {
     private void validateCells(int[] cellHeights) {
         if (cellHeights.length == 0)
             throw new InvalidCellHeightsException("Ohh God, why you want to try impossible things.Insert some cell heights, form a " +
-                    "container and then " +
-                    "check");
+                    "container and then check");
 
-        if (cellHeights.length == 2)
+        if (cellHeights.length < 3)
             throw new InvalidCellHeightsException("Invalid number of cells present in structure.\n" +
                     "Hints: \n" +
                     "1. You need minimum 3 cells to form a basin to collect water.\n" +
