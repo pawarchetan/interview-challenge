@@ -24,15 +24,18 @@ class App extends Component {
     handleReset() {
         const newGrid = Array(this.state.dim).fill(0).map(() => Array(this.state.dim).fill("+"));
         this.setState({'grid': newGrid, arr: Array(this.state.dim).fill(0)});
-        this.state.totalUnitsOfWaterContained = 0;
+        this.setState({totalUnitsOfWaterContained: 0});
     }
 
     displayWaterGrid() {
-        this.state.totalUnitsOfWaterContained = this.state.waterContainedCells.totalUnitsOfWaterContained;
+        this.setState({totalUnitsOfWaterContained: this.state.waterContainedCells.totalUnitsOfWaterContained});
         let temp = this.state.waterContainedCells.waterContainedCells;
         if (temp === undefined) {
             alert(this.state.waterContainedCells.message);
             return;
+        }
+        if (this.state.totalUnitsOfWaterContained === 0) {
+            alert("given cells do not form container... sorry i cant help you without container !!")
         }
         const waterGrid = this.state.grid;
         for (let y = 0; y < temp.length; y++) {
@@ -82,7 +85,6 @@ class App extends Component {
     handleOnClick(x, y) {
         const g = this.state.grid;
         this.state.arr[y] = this.state.dim - x;
-        console.log('newY : ' + this.state.arr);
         if (this.state.active) {
             if (g[x][y] === '+') {
                 g[x][y] = '';
@@ -143,16 +145,14 @@ class App extends Component {
                 <button style={{margin: "auto"}} onClick={this.rain}>Rain</button>
                 <br/><br/>
                 <button onClick={() => {
-                    this.state.dim -= 1;
-                    this.setState({dim: this.state.dim})
+                    this.setState({dim: this.state.dim - 1});
                 }}>-
                 </button>
 
                 &nbsp;&nbsp;&nbsp;<span style={{color: 'black'}}>{this.state.dim}</span>&nbsp;&nbsp;&nbsp;
 
                 <button onClick={() => {
-                    this.state.dim += 1;
-                    this.setState({dim: this.state.dim})
+                    this.setState({dim: this.state.dim + 1});
                 }}>+
                 </button>
                 <br/><br/><br/>
