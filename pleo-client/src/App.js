@@ -68,17 +68,11 @@ class App extends Component {
             .then(
                 (result) => {
                     this.setState({
-                        isLoaded: true,
                         waterContainedCells: result
                     });
                     this.displayWaterGrid();
                 },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
+                (error) => console.error(error)
             )
     }
 
